@@ -10,7 +10,7 @@ interface SerializedObjectInterface
      *
      * @return string
      */
-    public function getClass(): string;
+    public function getClassName(): string;
 
     /**
      * Get data for serialized object.

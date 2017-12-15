@@ -6,11 +6,11 @@ namespace ExtendsFramework\Serializer;
 class SerializedObject implements SerializedObjectInterface
 {
     /**
-     * Serialized object class.
+     * Serialized object class name.
      *
      * @var string
      */
-    protected $class;
+    protected $className;
 
     /**
      * Serialized object data.
@@ -22,21 +22,21 @@ class SerializedObject implements SerializedObjectInterface
     /**
      * SerializedObject constructor.
      *
-     * @param string $class
+     * @param string $className
      * @param array  $data
      */
-    public function __construct(string $class, array $data)
+    public function __construct(string $className, array $data)
     {
-        $this->class = $class;
+        $this->className = $className;
         $this->data = $data;
     }
 
     /**
      * @inheritDoc
      */
-    public function getClass(): string
+    public function getClassName(): string
     {
-        return $this->class;
+        return $this->className;
     }
 
     /**

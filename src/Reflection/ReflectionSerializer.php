@@ -54,7 +54,7 @@ class ReflectionSerializer implements SerializerInterface
     {
         $className = $this
                 ->getClassMapper()
-                ->toClassName($serializedObject->getClass()) ?? $serializedObject->getClass();
+                ->toClassName($serializedObject->getClassName()) ?? $serializedObject->getClassName();
 
         $class = new ReflectionClass($className);
         $parameters = $this->getConstructParameters(

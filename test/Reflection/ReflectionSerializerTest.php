@@ -43,7 +43,7 @@ class ReflectionSerializerTest extends TestCase
         $serializer = new ReflectionSerializer($classMapper);
         $serialized = $serializer->serialize($object);
 
-        $this->assertSame('Foo', $serialized->getClass());
+        $this->assertSame('Foo', $serialized->getClassName());
         $this->assertEquals([
             'foo' => 'foo',
             'bar' => [
@@ -76,7 +76,7 @@ class ReflectionSerializerTest extends TestCase
 
         $serialized = $this->createMock(SerializedObjectInterface::class);
         $serialized
-            ->method('getClass')
+            ->method('getClassName')
             ->willReturn('Foo');
 
         $serialized
@@ -125,7 +125,7 @@ class ReflectionSerializerTest extends TestCase
     {
         $serialized = $this->createMock(SerializedObjectInterface::class);
         $serialized
-            ->method('getClass')
+            ->method('getClassName')
             ->willReturn(Foo::class);
 
         $serialized

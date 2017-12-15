@@ -13,14 +13,14 @@ class SerializedObjectTest extends TestCase
      * Test that correct values will be returned.
      *
      * @covers \ExtendsFramework\Serializer\SerializedObject::__construct()
-     * @covers \ExtendsFramework\Serializer\SerializedObject::getClass()
+     * @covers \ExtendsFramework\Serializer\SerializedObject::getClassName()
      * @covers \ExtendsFramework\Serializer\SerializedObject::getData()
      */
     public function testGetMethods(): void
     {
         $serializedObject = new SerializedObject('Foo\Bar', ['foo' => 'bar']);
 
-        $this->assertSame('Foo\Bar', $serializedObject->getClass());
+        $this->assertSame('Foo\Bar', $serializedObject->getClassName());
         $this->assertSame(['foo' => 'bar'], $serializedObject->getData());
     }
 }
