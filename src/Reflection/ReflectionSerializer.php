@@ -3,6 +3,8 @@ declare(strict_types=1);
 
 namespace ExtendsFramework\Serializer\Reflection;
 
+use ExtendsFramework\Serializer\ClassMapper;
+use ExtendsFramework\Serializer\ClassMapperInterface;
 use ExtendsFramework\Serializer\Reflection\Exception\MissingConstructParameter;
 use ExtendsFramework\Serializer\SerializedObject;
 use ExtendsFramework\Serializer\SerializedObjectInterface;
@@ -14,12 +16,33 @@ use ReflectionMethod;
 class ReflectionSerializer implements SerializerInterface
 {
     /**
+     * Class resolver.
+     *
+     * @var ClassMapperInterface
+     */
+    protected $classMapper;
+
+    /**
+     * ReflectionSerializer constructor.
+     *
+     * @param ClassMapperInterface|null $classMapper
+     */
+    public function __construct(ClassMapperInterface $classMapper = null)
+    {
+        $this->classMapper = $classMapper ?? new ClassMapper();
+    }
+
+    /**
      * @inheritDoc
      */
     public function serialize(object $object): SerializedObjectInterface
     {
+        $identifier = $this
+                ->getClassMapper()
+                ->fromClassName(get_class($object)) ?? get_class($object);
+
         return new SerializedObject(
-            get_class($object),
+            $identifier,
             $this->getObjectValues($object)
         );
     }
@@ -29,7 +52,11 @@ class ReflectionSerializer implements SerializerInterface
      */
     public function unserialize(SerializedObjectInterface $serializedObject): object
     {
-        $class = new ReflectionClass($serializedObject->getClass());
+        $className = $this
+                ->getClassMapper()
+                ->toClassName($serializedObject->getClass()) ?? $serializedObject->getClass();
+
+        $class = new ReflectionClass($className);
         $parameters = $this->getConstructParameters(
             $class,
             $serializedObject->getData()
@@ -104,5 +131,15 @@ class ReflectionSerializer implements SerializerInterface
         }
 
         return $data ?? [];
+    }
+
+    /**
+     * Get class mapper.
+     *
+     * @return ClassMapperInterface
+     */
+    protected function getClassMapper(): ClassMapperInterface
+    {
+        return $this->classMapper;
     }
 }

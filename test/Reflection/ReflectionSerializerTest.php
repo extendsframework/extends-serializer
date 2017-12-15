@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace ExtendsFramework\Serializer\Reflection;
 
+use ExtendsFramework\Serializer\ClassMapperInterface;
 use ExtendsFramework\Serializer\SerializedObjectInterface;
 use PHPUnit\Framework\TestCase;
 
@@ -13,11 +14,19 @@ class ReflectionSerializerTest extends TestCase
      *
      * Test that object will be serialized to correct serialized object.
      *
+     * @covers \ExtendsFramework\Serializer\Reflection\ReflectionSerializer::__construct()
      * @covers \ExtendsFramework\Serializer\Reflection\ReflectionSerializer::serialize()
+     * @covers \ExtendsFramework\Serializer\Reflection\ReflectionSerializer::getClassMapper()
      * @covers \ExtendsFramework\Serializer\Reflection\ReflectionSerializer::getObjectValues()
      */
     public function testSerialize(): void
     {
+        $classMapper = $this->createMock(ClassMapperInterface::class);
+        $classMapper
+            ->method('fromClassName')
+            ->with(Foo::class)
+            ->willReturn('Foo');
+
         $object = new Foo(
             'foo',
             new Bar(
@@ -28,10 +37,13 @@ class ReflectionSerializerTest extends TestCase
             null
         );
 
-        $serializer = new ReflectionSerializer();
+        /**
+         * @var ClassMapperInterface $classMapper
+         */
+        $serializer = new ReflectionSerializer($classMapper);
         $serialized = $serializer->serialize($object);
 
-        $this->assertSame(Foo::class, $serialized->getClass());
+        $this->assertSame('Foo', $serialized->getClass());
         $this->assertEquals([
             'foo' => 'foo',
             'bar' => [
@@ -49,15 +61,23 @@ class ReflectionSerializerTest extends TestCase
      *
      * Test that serialized object will be unserialized to correct object.
      *
+     * @covers \ExtendsFramework\Serializer\Reflection\ReflectionSerializer::__construct()
      * @covers \ExtendsFramework\Serializer\Reflection\ReflectionSerializer::unserialize()
+     * @covers \ExtendsFramework\Serializer\Reflection\ReflectionSerializer::getClassMapper()
      * @covers \ExtendsFramework\Serializer\Reflection\ReflectionSerializer::getConstructParameters()
      */
     public function testUnserialize(): void
     {
+        $classMapper = $this->createMock(ClassMapperInterface::class);
+        $classMapper
+            ->method('toClassName')
+            ->with('Foo')
+            ->willReturn(Foo::class);
+
         $serialized = $this->createMock(SerializedObjectInterface::class);
         $serialized
             ->method('getClass')
-            ->willReturn(Foo::class);
+            ->willReturn('Foo');
 
         $serialized
             ->method('getData')
@@ -72,8 +92,9 @@ class ReflectionSerializerTest extends TestCase
 
         /**
          * @var SerializedObjectInterface $serialized
+         * @var ClassMapperInterface      $classMapper
          */
-        $serializer = new ReflectionSerializer();
+        $serializer = new ReflectionSerializer($classMapper);
         $object = $serializer->unserialize($serialized);
 
         $this->assertEquals(new Foo(
@@ -90,9 +111,11 @@ class ReflectionSerializerTest extends TestCase
     /**
      * Construct parameter missing.
      *
-     * Test that ...
+     * Test that exception will be thrown when constructor parameter is missing.
      *
+     * @covers                   \ExtendsFramework\Serializer\Reflection\ReflectionSerializer::__construct()
      * @covers                   \ExtendsFramework\Serializer\Reflection\ReflectionSerializer::serialize()
+     * @covers                   \ExtendsFramework\Serializer\Reflection\ReflectionSerializer::getClassMapper()
      * @covers                   \ExtendsFramework\Serializer\Reflection\ReflectionSerializer::getConstructParameters()
      * @covers                   \ExtendsFramework\Serializer\Reflection\Exception\MissingConstructParameter::__construct()
      * @expectedException        \ExtendsFramework\Serializer\Reflection\Exception\MissingConstructParameter
