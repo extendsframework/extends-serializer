@@ -57,8 +57,9 @@ class ReflectionSerializer implements SerializerInterface
 
                 $class = $parameter->getClass();
                 if ($class instanceof ReflectionClass) {
-                    $parameters = $this->getConstructParameters($class, $data[$name] ?? []);
-                    $value = $class->newInstanceArgs($parameters);
+                    $value = $class->newInstanceArgs(
+                        $this->getConstructParameters($class, $data[$name] ?? [])
+                    );
                 } elseif (array_key_exists($name, $data) === true) {
                     $value = $data[$name];
                 } elseif ($parameter->isDefaultValueAvailable() === true) {
