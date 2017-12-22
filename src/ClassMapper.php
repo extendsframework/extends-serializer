@@ -13,16 +13,6 @@ class ClassMapper implements ClassMapperInterface
     protected $mapping = [];
 
     /**
-     * ClassMapper constructor.
-     *
-     * @param array|null $mapping
-     */
-    public function __construct(array $mapping = null)
-    {
-        $this->mapping = $mapping ?? [];
-    }
-
-    /**
      * @inheritDoc
      */
     public function toClassName(string $identifier): ?string
@@ -36,5 +26,19 @@ class ClassMapper implements ClassMapperInterface
     public function fromClassName(string $className): ?string
     {
         return array_search($className, $this->mapping) ?: null;
+    }
+
+    /**
+     * Add class name for identifier.
+     *
+     * @param string $className
+     * @param string $identifier
+     * @return ClassMapper
+     */
+    public function addMapping(string $className, string $identifier): ClassMapper
+    {
+        $this->mapping[$identifier] = $className;
+
+        return $this;
     }
 }
