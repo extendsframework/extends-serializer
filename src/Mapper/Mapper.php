@@ -1,9 +1,11 @@
 <?php
 declare(strict_types=1);
 
-namespace ExtendsFramework\Serializer;
+namespace ExtendsFramework\Serializer\Mapper;
 
-class ClassMapper implements ClassMapperInterface
+use ExtendsFramework\Serializer\Mapper\Exception\ClassNotExists;
+
+class Mapper implements MapperInterface
 {
     /**
      * Identifier to class name mapping.
@@ -33,10 +35,15 @@ class ClassMapper implements ClassMapperInterface
      *
      * @param string $className
      * @param string $identifier
-     * @return ClassMapper
+     * @return Mapper
+     * @throws MapperException
      */
-    public function addMapping(string $className, string $identifier): ClassMapper
+    public function addMapping(string $className, string $identifier): Mapper
     {
+        if (class_exists($className) === false) {
+            throw new ClassNotExists($className);
+        }
+
         $this->mapping[$identifier] = $className;
 
         return $this;

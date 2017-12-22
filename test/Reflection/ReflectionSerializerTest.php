@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace ExtendsFramework\Serializer\Reflection;
 
-use ExtendsFramework\Serializer\ClassMapperInterface;
+use ExtendsFramework\Serializer\Mapper\MapperInterface;
 use ExtendsFramework\Serializer\SerializedObjectInterface;
 use PHPUnit\Framework\TestCase;
 
@@ -21,7 +21,7 @@ class ReflectionSerializerTest extends TestCase
      */
     public function testSerialize(): void
     {
-        $classMapper = $this->createMock(ClassMapperInterface::class);
+        $classMapper = $this->createMock(MapperInterface::class);
         $classMapper
             ->method('fromClassName')
             ->with(Foo::class)
@@ -38,7 +38,7 @@ class ReflectionSerializerTest extends TestCase
         );
 
         /**
-         * @var ClassMapperInterface $classMapper
+         * @var MapperInterface $classMapper
          */
         $serializer = new ReflectionSerializer($classMapper);
         $serialized = $serializer->serialize($object);
@@ -68,7 +68,7 @@ class ReflectionSerializerTest extends TestCase
      */
     public function testUnserialize(): void
     {
-        $classMapper = $this->createMock(ClassMapperInterface::class);
+        $classMapper = $this->createMock(MapperInterface::class);
         $classMapper
             ->method('toClassName')
             ->with('Foo')
@@ -92,7 +92,7 @@ class ReflectionSerializerTest extends TestCase
 
         /**
          * @var SerializedObjectInterface $serialized
-         * @var ClassMapperInterface      $classMapper
+         * @var MapperInterface           $classMapper
          */
         $serializer = new ReflectionSerializer($classMapper);
         $object = $serializer->unserialize($serialized);

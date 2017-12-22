@@ -1,9 +1,9 @@
 <?php
 declare(strict_types=1);
 
-namespace ExtendsFramework\Serializer;
+namespace ExtendsFramework\Serializer\Mapper;
 
-interface ClassMapperInterface
+interface MapperInterface
 {
     /**
      * Get class name for identifier.

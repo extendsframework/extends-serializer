@@ -3,8 +3,8 @@ declare(strict_types=1);
 
 namespace ExtendsFramework\Serializer\Reflection;
 
-use ExtendsFramework\Serializer\ClassMapper;
-use ExtendsFramework\Serializer\ClassMapperInterface;
+use ExtendsFramework\Serializer\Mapper\Mapper;
+use ExtendsFramework\Serializer\Mapper\MapperInterface;
 use ExtendsFramework\Serializer\Reflection\Exception\MissingConstructParameter;
 use ExtendsFramework\Serializer\SerializedObject;
 use ExtendsFramework\Serializer\SerializedObjectInterface;
@@ -18,18 +18,18 @@ class ReflectionSerializer implements SerializerInterface
     /**
      * Class resolver.
      *
-     * @var ClassMapperInterface
+     * @var MapperInterface
      */
     protected $classMapper;
 
     /**
      * ReflectionSerializer constructor.
      *
-     * @param ClassMapperInterface|null $classMapper
+     * @param MapperInterface|null $classMapper
      */
-    public function __construct(ClassMapperInterface $classMapper = null)
+    public function __construct(MapperInterface $classMapper = null)
     {
-        $this->classMapper = $classMapper ?? new ClassMapper();
+        $this->classMapper = $classMapper ?? new Mapper();
     }
 
     /**
@@ -136,9 +136,9 @@ class ReflectionSerializer implements SerializerInterface
     /**
      * Get class mapper.
      *
-     * @return ClassMapperInterface
+     * @return MapperInterface
      */
-    protected function getClassMapper(): ClassMapperInterface
+    protected function getClassMapper(): MapperInterface
     {
         return $this->classMapper;
     }
