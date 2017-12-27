@@ -13,7 +13,7 @@ class MapperFactory implements ServiceFactoryInterface
     /**
      * @inheritDoc
      */
-    public function createService(string $key, ServiceLocatorInterface $serviceLocator, array $extra = null): MapperInterface
+    public function createService(string $key, ServiceLocatorInterface $serviceLocator, array $extra = null): object
     {
         $config = $serviceLocator->getConfig();
         $config = $config[MapperInterface::class];
