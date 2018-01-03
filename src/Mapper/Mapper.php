@@ -19,7 +19,7 @@ class Mapper implements MapperInterface
      */
     public function toClassName(string $identifier): ?string
     {
-        return $this->mapping[$identifier] ?? null;
+        return $this->getMapping()[$identifier] ?? null;
     }
 
     /**
@@ -27,7 +27,7 @@ class Mapper implements MapperInterface
      */
     public function fromClassName(string $className): ?string
     {
-        return array_search($className, $this->mapping) ?: null;
+        return array_search($className, $this->getMapping()) ?: null;
     }
 
     /**
@@ -47,5 +47,15 @@ class Mapper implements MapperInterface
         $this->mapping[$identifier] = $className;
 
         return $this;
+    }
+
+    /**
+     * Get Mapping.
+     *
+     * @return array
+     */
+    protected function getMapping(): array
+    {
+        return $this->mapping;
     }
 }

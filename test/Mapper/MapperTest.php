@@ -14,6 +14,7 @@ class MapperTest extends TestCase
      *
      * @covers \ExtendsFramework\Serializer\Mapper\Mapper::addMapping()
      * @covers \ExtendsFramework\Serializer\Mapper\Mapper::toClassName()
+     * @covers \ExtendsFramework\Serializer\Mapper\Mapper::getMapping()
      */
     public function testToClassName(): void
     {
@@ -31,6 +32,7 @@ class MapperTest extends TestCase
      *
      * @covers \ExtendsFramework\Serializer\Mapper\Mapper::addMapping()
      * @covers \ExtendsFramework\Serializer\Mapper\Mapper::fromClassName()
+     * @covers \ExtendsFramework\Serializer\Mapper\Mapper::getMapping()
      */
     public function testFromClassName(): void
     {
