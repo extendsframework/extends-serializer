@@ -27,7 +27,7 @@ class Mapper implements MapperInterface
      */
     public function fromClassName(string $className): ?string
     {
-        return array_search($className, $this->getMapping()) ?: null;
+        return array_search($className, $this->getMapping(), true) ?: null;
     }
 
     /**
