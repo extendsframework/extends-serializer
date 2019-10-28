@@ -12,7 +12,7 @@ class Mapper implements MapperInterface
      *
      * @var array
      */
-    protected $mapping = [];
+    private $mapping = [];
 
     /**
      * @inheritDoc
@@ -54,7 +54,7 @@ class Mapper implements MapperInterface
      *
      * @return array
      */
-    protected function getMapping(): array
+    private function getMapping(): array
     {
         return $this->mapping;
     }

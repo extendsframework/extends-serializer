@@ -10,14 +10,14 @@ class SerializedObject implements SerializedObjectInterface
      *
      * @var string
      */
-    protected $className;
+    private $className;
 
     /**
      * Serialized object data.
      *
      * @var array
      */
-    protected $data;
+    private $data;
 
     /**
      * SerializedObject constructor.

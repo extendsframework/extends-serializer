@@ -20,7 +20,7 @@ class ReflectionSerializer implements SerializerInterface
      *
      * @var MapperInterface
      */
-    protected $classMapper;
+    private $classMapper;
 
     /**
      * ReflectionSerializer constructor.
@@ -75,7 +75,7 @@ class ReflectionSerializer implements SerializerInterface
      * @return array
      * @throws SerializerException
      */
-    protected function getConstructParameters(ReflectionClass $reflectionClass, array $data): array
+    private function getConstructParameters(ReflectionClass $reflectionClass, array $data): array
     {
         $constructor = $reflectionClass->getConstructor();
         if ($constructor instanceof ReflectionMethod) {
@@ -110,7 +110,7 @@ class ReflectionSerializer implements SerializerInterface
      * @param object $object
      * @return array
      */
-    protected function getObjectValues(object $object): array
+    private function getObjectValues(object $object): array
     {
         $class = new ReflectionClass(get_class($object));
         $constructor = $class->getConstructor();
@@ -138,7 +138,7 @@ class ReflectionSerializer implements SerializerInterface
      *
      * @return MapperInterface
      */
-    protected function getClassMapper(): MapperInterface
+    private function getClassMapper(): MapperInterface
     {
         return $this->classMapper;
     }
