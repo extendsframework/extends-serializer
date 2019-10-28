@@ -9,7 +9,7 @@ interface MapperInterface
      * Get class name for identifier.
      *
      * @param string $identifier
-     * @return null|string
+     * @return string|null
      */
     public function toClassName(string $identifier): ?string;
 
@@ -17,7 +17,7 @@ interface MapperInterface
      * Get identifier for class name.
      *
      * @param string $className
-     * @return null|string
+     * @return string|null
      */
     public function fromClassName(string $className): ?string;
 }
