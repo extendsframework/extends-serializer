@@ -19,7 +19,7 @@ class ReflectionSerializer implements SerializerInterface
     /**
      * Class resolver.
      *
-     * @var MapperInterface
+     * @var MapperInterface|null
      */
     private $classMapper;
 
@@ -30,7 +30,7 @@ class ReflectionSerializer implements SerializerInterface
      */
     public function __construct(MapperInterface $classMapper = null)
     {
-        $this->classMapper = $classMapper ?? new Mapper();
+        $this->classMapper = $classMapper;
     }
 
     /**
@@ -146,6 +146,10 @@ class ReflectionSerializer implements SerializerInterface
      */
     private function getClassMapper(): MapperInterface
     {
+        if ($this->classMapper === null) {
+            $this->classMapper = new Mapper();
+        }
+
         return $this->classMapper;
     }
 }
