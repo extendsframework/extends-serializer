@@ -40,7 +40,7 @@ class Mapper implements MapperInterface
      */
     public function addMapping(string $className, string $identifier): Mapper
     {
-        if (class_exists($className) === false) {
+        if (!class_exists($className)) {
             throw new ClassNotExists($className);
         }
 

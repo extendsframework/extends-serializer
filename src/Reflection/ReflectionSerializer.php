@@ -87,11 +87,11 @@ class ReflectionSerializer implements SerializerInterface
                     $value = $class->newInstanceArgs(
                         $this->getConstructParameters($class, $data[$name] ?? [])
                     );
-                } elseif (array_key_exists($name, $data) === true) {
+                } elseif (array_key_exists($name, $data)) {
                     $value = $data[$name];
-                } elseif ($parameter->isDefaultValueAvailable() === true) {
+                } elseif ($parameter->isDefaultValueAvailable()) {
                     $value = $parameter->getDefaultValue();
-                } elseif ($parameter->allowsNull() === true) {
+                } elseif ($parameter->allowsNull()) {
                     $value = null;
                 } else {
                     throw new MissingConstructParameter($parameter);
@@ -122,7 +122,7 @@ class ReflectionSerializer implements SerializerInterface
                 $property->setAccessible(true);
 
                 $value = $property->getValue($object);
-                if (is_object($value) === true) {
+                if (is_object($value)) {
                     $value = $this->getObjectValues($value);
                 }
 
