@@ -11,6 +11,7 @@ use ExtendsFramework\Serializer\SerializedObjectInterface;
 use ExtendsFramework\Serializer\SerializerException;
 use ExtendsFramework\Serializer\SerializerInterface;
 use ReflectionClass;
+use ReflectionException;
 use ReflectionMethod;
 
 class ReflectionSerializer implements SerializerInterface
@@ -34,6 +35,7 @@ class ReflectionSerializer implements SerializerInterface
 
     /**
      * @inheritDoc
+     * @throws ReflectionException
      */
     public function serialize(object $object): SerializedObjectInterface
     {
@@ -49,6 +51,7 @@ class ReflectionSerializer implements SerializerInterface
 
     /**
      * @inheritDoc
+     * @throws ReflectionException
      */
     public function unserialize(SerializedObjectInterface $serializedObject): object
     {
@@ -74,6 +77,7 @@ class ReflectionSerializer implements SerializerInterface
      * @param array           $data
      * @return array
      * @throws SerializerException
+     * @throws ReflectionException
      */
     private function getConstructParameters(ReflectionClass $reflectionClass, array $data): array
     {
@@ -109,12 +113,14 @@ class ReflectionSerializer implements SerializerInterface
      *
      * @param object $object
      * @return array
+     * @throws ReflectionException
      */
     private function getObjectValues(object $object): array
     {
         $class = new ReflectionClass(get_class($object));
         $constructor = $class->getConstructor();
         if ($constructor instanceof ReflectionMethod) {
+            $data = [];
             foreach ($constructor->getParameters() as $parameter) {
                 $name = $parameter->getName();
 
