@@ -18,9 +18,10 @@ class MapperFactory implements ServiceFactoryInterface
     public function createService(string $key, ServiceLocatorInterface $serviceLocator, array $extra = null): object
     {
         $config = $serviceLocator->getConfig();
+        $config = $config[MapperInterface::class] ?? [];
 
         $mapper = new Mapper();
-        foreach ($config[MapperInterface::class] ?? [] as $className => $identifier) {
+        foreach ($config as $className => $identifier) {
             $mapper->addMapping($className, $identifier);
         }
 
