@@ -30,7 +30,7 @@ class ReflectionSerializer implements SerializerInterface
      */
     public function __construct(MapperInterface $classMapper = null)
     {
-        $this->classMapper = $classMapper;
+        $this->classMapper = $classMapper ?? new Mapper();
     }
 
     /**
@@ -39,9 +39,7 @@ class ReflectionSerializer implements SerializerInterface
      */
     public function serialize(object $object): SerializedObjectInterface
     {
-        $identifier = $this
-                ->getClassMapper()
-                ->fromClassName(get_class($object)) ?? get_class($object);
+        $identifier = $this->classMapper->fromClassName(get_class($object)) ?? get_class($object);
 
         return new SerializedObject(
             $identifier,
@@ -55,15 +53,11 @@ class ReflectionSerializer implements SerializerInterface
      */
     public function unserialize(SerializedObjectInterface $serializedObject): object
     {
-        $className = $this
-                ->getClassMapper()
-                ->toClassName($serializedObject->getClassName()) ?? $serializedObject->getClassName();
+        $className = $this->classMapper->toClassName($serializedObject->getClassName()) ??
+            $serializedObject->getClassName();
 
         $class = new ReflectionClass($className);
-        $parameters = $this->getConstructParameters(
-            $class,
-            $serializedObject->getData()
-        );
+        $parameters = $this->getConstructParameters($class, $serializedObject->getData());
 
         return $class->newInstanceArgs($parameters);
     }
@@ -137,19 +131,5 @@ class ReflectionSerializer implements SerializerInterface
         }
 
         return $data ?? [];
-    }
-
-    /**
-     * Get class mapper.
-     *
-     * @return MapperInterface
-     */
-    private function getClassMapper(): MapperInterface
-    {
-        if ($this->classMapper === null) {
-            $this->classMapper = new Mapper();
-        }
-
-        return $this->classMapper;
     }
 }

@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace ExtendsFramework\Serializer\Mapper;
 
+use ExtendsFramework\Serializer\Mapper\Exception\ClassNotExists;
 use PHPUnit\Framework\TestCase;
 
 class MapperTest extends TestCase
@@ -14,12 +15,10 @@ class MapperTest extends TestCase
      *
      * @covers \ExtendsFramework\Serializer\Mapper\Mapper::addMapping()
      * @covers \ExtendsFramework\Serializer\Mapper\Mapper::toClassName()
-     * @covers \ExtendsFramework\Serializer\Mapper\Mapper::getMapping()
      */
     public function testToClassName(): void
     {
-        $mapper = (new Mapper())
-            ->addMapping(QuxQuux::class, 'QuxQuux');
+        $mapper = (new Mapper())->addMapping(QuxQuux::class, 'QuxQuux');
 
         $this->assertSame(QuxQuux::class, $mapper->toClassName('QuxQuux'));
         $this->assertNull($mapper->toClassName('FooBar'));
@@ -32,12 +31,10 @@ class MapperTest extends TestCase
      *
      * @covers \ExtendsFramework\Serializer\Mapper\Mapper::addMapping()
      * @covers \ExtendsFramework\Serializer\Mapper\Mapper::fromClassName()
-     * @covers \ExtendsFramework\Serializer\Mapper\Mapper::getMapping()
      */
     public function testFromClassName(): void
     {
-        $mapper = (new Mapper())
-            ->addMapping(QuxQuux::class, 'QuxQuux');
+        $mapper = (new Mapper())->addMapping(QuxQuux::class, 'QuxQuux');
 
         $this->assertSame('QuxQuux', $mapper->fromClassName(QuxQuux::class));
         $this->assertNull($mapper->fromClassName(FooBar::class));
@@ -48,21 +45,14 @@ class MapperTest extends TestCase
      *
      * Test that an exception will be thrown when class not exists.
      *
-     * @covers                   \ExtendsFramework\Serializer\Mapper\Mapper::addMapping()
-     * @covers                   \ExtendsFramework\Serializer\Mapper\Exception\ClassNotExists::__construct()
-     * @expectedException        \ExtendsFramework\Serializer\Mapper\Exception\ClassNotExists
-     * @expectedExceptionMessage Class with name "BarBaz" does not exist and can not be added to the mapper.
+     * @covers \ExtendsFramework\Serializer\Mapper\Mapper::addMapping()
+     * @covers \ExtendsFramework\Serializer\Mapper\Exception\ClassNotExists::__construct()
      */
     public function testClassNotExists(): void
     {
+        $this->expectException(ClassNotExists::class);
+        $this->expectExceptionMessage('Class with name "BarBaz" does not exist and can not be added to the mapper.');
+
         (new Mapper())->addMapping('BarBaz', 'BarBaz');
     }
-}
-
-class QuxQuux
-{
-}
-
-class FooBar
-{
 }

@@ -36,7 +36,3 @@ class MapperFactoryTest extends TestCase
         $this->assertSame(ClassStub::class, $mapper->toClassName('ClassStub'));
     }
 }
-
-class ClassStub
-{
-}
